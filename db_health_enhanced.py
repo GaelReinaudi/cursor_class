@@ -5,10 +5,11 @@ Run: python db_health_enhanced.py
 """
 import psycopg2
 import sys
+from commons.logger import sentry_logger as logger
 
 def check_connection():
     """Test basic database connectivity."""
-    print("🔍 Testing database connection...")
+    logger.info("🔍 Testing database connection...")
     try:
         conn = psycopg2.connect(
             host="localhost",
@@ -18,15 +19,15 @@ def check_connection():
             password="demo",
             connect_timeout=3,
         )
-        print("✅ Database connection successful")
+        logger.info("✅ Database connection successful")
         return conn
     except Exception as exc:
-        print(f"❌ Database connection failed: {exc}")
+        logger.error(f"❌ Database connection failed: {exc}")
         return None
 
 def check_schema(conn):
     """Validate that required tables and relationships exist."""
-    print("\n🔍 Validating database schema...")
+    logger.info("🔍 Validating database schema...")
     
     cursor = conn.cursor()
     
@@ -48,10 +49,10 @@ def check_schema(conn):
         
         missing_tables = set(expected_tables) - set(existing_tables)
         if missing_tables:
-            print(f"❌ Missing tables: {', '.join(missing_tables)}")
+            logger.error(f"❌ Missing tables: {', '.join(missing_tables)}")
             return False
         
-        print(f"✅ All {len(expected_tables)} tables present")
+        logger.info(f"✅ All {len(expected_tables)} tables present")
         
         # Check foreign key constraints
         cursor.execute("""
@@ -63,10 +64,10 @@ def check_schema(conn):
         fk_count = cursor.fetchone()[0]
         
         if fk_count < 5:  # We expect at least 5 foreign keys
-            print(f"❌ Insufficient foreign key constraints: {fk_count}")
+            logger.error(f"❌ Insufficient foreign key constraints: {fk_count}")
             return False
         
-        print(f"✅ Foreign key constraints: {fk_count}")
+        logger.info(f"✅ Foreign key constraints: {fk_count}")
         
         # Check indexes
         cursor.execute("""
@@ -78,10 +79,10 @@ def check_schema(conn):
         index_count = cursor.fetchone()[0]
         
         if index_count < 8:  # We expect at least 8 custom indexes
-            print(f"❌ Insufficient indexes: {index_count}")
+            logger.error(f"❌ Insufficient indexes: {index_count}")
             return False
         
-        print(f"✅ Performance indexes: {index_count}")
+        logger.info(f"✅ Performance indexes: {index_count}")
         
         # Check if UUID extension is loaded
         cursor.execute("""
@@ -107,7 +108,7 @@ def check_schema(conn):
 
 def check_sample_data(conn):
     """Verify that sample data exists and relationships work."""
-    print("\n🔍 Validating sample data and relationships...")
+    logger.info("🔍 Validating sample data and relationships...")
     
     cursor = conn.cursor()
     

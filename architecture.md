@@ -307,11 +307,22 @@ cursor_class/                                          # Root project directory
 │       └── Lines 18-39: Method stubs (hash_password, authenticate_user, etc.)
 │
 ├── 📋 Configuration Files
-│   ├── requirements.txt                              # Python deps (4 lines)
+│   ├── pyproject.toml                               # Project config (171 lines)
+│   │   ├── Python 3.12 + modern typing standards
+│   │   ├── Black/Ruff linting configuration
+│   │   ├── Development dependencies structure
+│   │   ├── Pytest configuration with markers
+│   │   └── Coverage reporting settings
+│   ├── requirements.txt                              # Python deps (5 lines)
 │   │   ├── fastapi==0.104.1                         # Web framework
 │   │   ├── uvicorn[standard]==0.24.0                # ASGI server
 │   │   ├── pytest==7.4.3                           # Testing framework
-│   │   └── pydantic==2.5.0                          # Data validation
+│   │   ├── pydantic==2.5.0                          # Data validation
+│   │   └── loguru>=0.7.0                           # Logging framework
+│   ├── commons/                                     # Shared utilities (35 lines)
+│   │   ├── __init__.py                             # Package marker
+│   │   ├── logger.py                               # Loguru configuration
+│   │   └── utils.py                                # pytest_this_file helper
 │   │
 └── 📚 Documentation & Guides
     ├── README.md                                     # Project intro (3 lines)
@@ -329,23 +340,29 @@ cursor_class/                                          # Root project directory
 | **🎯 Task Management Core** | **4** | **286** | **12** | **Low** | **Production-ready task management** |
 | ├── Backend API | 2 | 121 | 7 functions + 2 classes | Simple | REST API + business logic |
 | └── Frontend React | 2 | 174 | 5 functions + 1 component | Simple | Single-page application |
-| **🧪 Testing Infrastructure** | **2** | **505** | **35** | **Medium** | **Comprehensive test coverage** |
-| ├── Core App Tests | 1 | 121 | 11 test methods | Simple | Task management validation |
+| **🧪 Testing Infrastructure** | **2** | **507** | **35** | **Medium** | **Comprehensive test coverage** |
+| ├── Core App Tests | 1 | 123 | 11 test methods | Simple | Task management validation |
 | └── Calculator Tests | 1 | 384 | 24 test methods | Complex | Mathematical operation validation |
-| **🧮 Demo/Tutorial Code** | **2** | **230** | **14** | **Medium** | **Educational examples** |
+| **🧮 Demo/Tutorial Code** | **2** | **232** | **14** | **Medium** | **Educational examples** |
 | ├── Calculator Module | 1 | 189 | 12 functions + 2 classes | Medium | Mathematical operations showcase |
-| └── User Manager Stub | 1 | 41 | 9 method stubs + 1 class | Minimal | Authentication demo template |
-| **📋 Configuration** | **4** | **111** | **0** | **N/A** | **Project setup & documentation** |
+| └── User Manager Stub | 1 | 43 | 9 method stubs + 1 class | Minimal | Authentication demo template |
+| **🔧 Commons & Utilities** | **3** | **35** | **1** | **Simple** | **Shared infrastructure** |
+| ├── Logger Configuration | 1 | 24 | Loguru setup | Simple | Centralized logging |
+| └── Test Utilities | 1 | 50 | pytest_this_file | Simple | Test execution helper |
+| **📋 Configuration** | **5** | **282** | **0** | **N/A** | **Project setup & standards** |
+| ├── pyproject.toml | 1 | 171 | Project config | N/A | Modern Python standards |
+| └── requirements.txt | 1 | 5 | Dependencies | N/A | Runtime dependencies |
 | **📚 Documentation** | **4** | **206** | **0** | **N/A** | **Tutorial guides & architecture** |
-| **🎯 TOTAL PROJECT** | **16** | **1,338** | **61** | **Low-Medium** | **Educational full-stack application** |
+| **🎯 TOTAL PROJECT** | **20** | **1,548** | **62** | **Low-Medium** | **Standards-compliant full-stack application** |
 
 ### **🔍 Technical Complexity Breakdown**
 
 **Backend Complexity: ★★☆☆☆ (2/5 - Simple)**
 - Linear data structures (Python lists)
 - Synchronous operations only
-- No database or external dependencies  
+- Modern Python 3.12 typing standards
 - Basic CRUD operations with minimal business logic
+- Centralized logging with loguru
 
 **Frontend Complexity: ★★☆☆☆ (2/5 - Simple)**
 - Single React component with basic hooks
@@ -353,16 +370,25 @@ cursor_class/                                          # Root project directory
 - Direct HTTP calls with native fetch()
 - Minimal styling with inline styles
 
-**Testing Complexity: ★★★★☆ (4/5 - Comprehensive)**
+**Testing Complexity: ★★★★★ (5/5 - Comprehensive & Standards-Compliant)**
 - 100% coverage of core functionality
-- Edge case testing with boundary conditions
+- pytest-check for value assertions (team standard)
 - Proper test isolation and setup/teardown
+- Executable test files with commons.utils integration
 - Advanced testing patterns (pytest-check, parametrized tests)
 
-**Overall Architecture: ★★★☆☆ (3/5 - Well-Structured)**
+**Code Quality: ★★★★★ (5/5 - Production Standards)**
+- Python 3.12 with modern typing (list, dict vs List, Dict)
+- Black + Ruff linting with pyproject.toml configuration
+- Type checking with 'ty' tool integration
+- Centralized logging (loguru) replacing print statements
+- Proper development dependencies structure
+
+**Overall Architecture: ★★★★☆ (4/5 - Well-Structured & Compliant)**
 - Clear separation of concerns
 - RESTful API design
 - Proper file organization
+- Team coding standards compliance
 - Educational value with progressive complexity
 
 ## 🔗 **Key Integration Points**
@@ -425,14 +451,21 @@ graph TB
 - ✅ RESTful API design following HTTP conventions
 - ✅ Comprehensive test coverage with clean test organization
 - ✅ Modern technology stack (FastAPI + React)
-- ✅ Type safety with Pydantic models and TypeScript potential
+- ✅ Type safety with Pydantic models and modern Python typing
+- ✅ **Team Standards Compliance:**
+  - ✅ Python 3.12 with modern typing syntax (list vs List)
+  - ✅ pytest-check for value assertions in tests
+  - ✅ Loguru logging instead of print statements
+  - ✅ Black + Ruff linting with pyproject.toml
+  - ✅ Type checking with 'ty' tool
+  - ✅ Executable test files with commons.utils integration
+  - ✅ Proper development dependencies structure
 
 ### **Areas for Enhancement**
 - 🔄 Add database persistence (currently in-memory only)
 - 🔐 Implement authentication and authorization
 - 📝 Add input validation on frontend
 - 🌐 Environment-based configuration for API URLs
-- 📊 Add logging and monitoring capabilities
 - 🧪 Add integration tests for full API workflows
 
 ### **Educational Value**

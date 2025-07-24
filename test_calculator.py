@@ -380,5 +380,6 @@ class TestEdgeCases:
             StatisticsCalculator.mode([1, 2, 3, 4])
 
 
-if __name__ == "__main__":
-    pytest.main([__file__, "-v"]) 
+if __name__ == "__main__":  # pragma: no cover
+    from commons.utils import pytest_this_file
+    pytest_this_file() 

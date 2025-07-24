@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 from datetime import datetime
 from enum import Enum
 
@@ -42,7 +42,7 @@ class TaskManager:
     """Manages a collection of tasks with CRUD operations."""
     
     def __init__(self):
-        self.tasks: List[Task] = []
+        self.tasks: list[Task] = []
         self._next_id = 1
     
     def add_task(self, description: str, priority: str = "medium") -> Task:
@@ -52,7 +52,7 @@ class TaskManager:
         self._next_id += 1
         return task
     
-    def list_tasks(self) -> List[Task]:
+    def list_tasks(self) -> list[Task]:
         """Return all tasks."""
         return self.tasks.copy()
     
@@ -79,19 +79,19 @@ class TaskManager:
                 return True
         return False
     
-    def get_pending_tasks(self) -> List[Task]:
+    def get_pending_tasks(self) -> list[Task]:
         """Return only incomplete tasks."""
         return [task for task in self.tasks if not task.completed]
     
-    def get_completed_tasks(self) -> List[Task]:
+    def get_completed_tasks(self) -> list[Task]:
         """Return only completed tasks."""
         return [task for task in self.tasks if task.completed]
     
-    def get_tasks_by_priority(self, priority: str) -> List[Task]:
+    def get_tasks_by_priority(self, priority: str) -> list[Task]:
         """Return tasks filtered by priority level."""
         return [task for task in self.tasks if task.priority == priority.lower()]
     
-    def get_priority_sorted_tasks(self) -> List[Task]:
+    def get_priority_sorted_tasks(self) -> list[Task]:
         """Return all tasks sorted by priority (high -> medium -> low)."""
         priority_order = {"high": 0, "medium": 1, "low": 2}
         return sorted(self.tasks, key=lambda task: priority_order.get(task.priority, 3))

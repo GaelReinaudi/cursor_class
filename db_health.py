@@ -4,6 +4,7 @@ Run: python db_health.py   (requires psycopg2-binary)
 """
 import psycopg2
 import sys
+from commons.logger import sentry_logger as logger
 
 try:
     conn = psycopg2.connect(
@@ -15,7 +16,7 @@ try:
         connect_timeout=3,
     )
     conn.close()
-    print("✅  Postgres is reachable.")
+    logger.info("✅  Postgres is reachable.")
 except Exception as exc:
-    print("❌  Postgres connection failed:", exc)
+    logger.error(f"❌  Postgres connection failed: {exc}")
     sys.exit(1) 

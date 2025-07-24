@@ -1,5 +1,5 @@
 import math
-from typing import List, Union
+from typing import Union
 
 
 class Calculator:
@@ -73,7 +73,7 @@ def is_prime(number: int) -> bool:
     return True
 
 
-def fibonacci_sequence(n: int) -> List[int]:
+def fibonacci_sequence(n: int) -> list[int]:
     """Generate Fibonacci sequence up to n terms."""
     if n <= 0:
         return []
@@ -88,7 +88,7 @@ def fibonacci_sequence(n: int) -> List[int]:
     return sequence
 
 
-def calculate_average(numbers: List[Union[int, float]]) -> float:
+def calculate_average(numbers: list[Union[int, float]]) -> float:
     """Calculate the average of a list of numbers."""
     if not numbers:
         raise ValueError("Cannot calculate average of empty list")
@@ -107,7 +107,7 @@ class StatisticsCalculator:
     """Calculator for statistical operations."""
     
     @staticmethod
-    def median(numbers: List[Union[int, float]]) -> float:
+    def median(numbers: list[Union[int, float]]) -> float:
         """Calculate median of a list of numbers."""
         if not numbers:
             raise ValueError("Cannot calculate median of empty list")
@@ -121,7 +121,7 @@ class StatisticsCalculator:
             return float(sorted_numbers[n//2])
     
     @staticmethod
-    def mode(numbers: List[Union[int, float]]) -> Union[int, float]:
+    def mode(numbers: list[Union[int, float]]) -> Union[int, float]:
         """Find the mode (most frequent value) in a list."""
         if not numbers:
             raise ValueError("Cannot calculate mode of empty list")
@@ -140,7 +140,7 @@ class StatisticsCalculator:
         return modes[0]
     
     @staticmethod
-    def variance(numbers: List[Union[int, float]]) -> float:
+    def variance(numbers: list[Union[int, float]]) -> float:
         """Calculate variance of a list of numbers."""
         if len(numbers) < 2:
             raise ValueError("Variance requires at least 2 values")
@@ -149,7 +149,7 @@ class StatisticsCalculator:
         return sum((x - mean) ** 2 for x in numbers) / (len(numbers) - 1)
     
     @staticmethod
-    def standard_deviation(numbers: List[Union[int, float]]) -> float:
+    def standard_deviation(numbers: list[Union[int, float]]) -> float:
         """Calculate standard deviation of a list of numbers."""
         return math.sqrt(StatisticsCalculator.variance(numbers))
 
