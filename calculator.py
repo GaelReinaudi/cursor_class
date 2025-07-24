@@ -133,7 +133,9 @@ class StatisticsCalculator:
         max_count = max(frequency.values())
         modes = [num for num, count in frequency.items() if count == max_count]
         
-        if len(modes) == len(set(numbers)):
+        # If all values appear the same number of times and there are multiple unique values,
+        # then there's no single mode
+        if len(modes) == len(set(numbers)) and len(set(numbers)) > 1:
             raise ValueError("No mode found - all values appear equally")
         
         return modes[0]
