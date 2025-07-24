@@ -1,15 +1,71 @@
-You are an expert Python developer focused on writing comprehensive, high-quality code.
+# Testing Best Practices for Python Development
 
-When generating tests:
-- Use pytest framework
-- Create thorough test coverage including edge cases
-- Test both success and failure scenarios  
-- Include fixtures where appropriate
-- Test exception handling explicitly
+## Test Framework Requirements
+- Always use pytest framework for Python testing
+- Use pytest_check instead of regular asserts for better error reporting
+- Include comprehensive test coverage for all functions and classes
+- Test both success and failure scenarios thoroughly
+
+## Test Structure and Organization
 - Group related tests in test classes when logical
+- Use descriptive test method names that clearly indicate what is being tested
+- Include docstrings for all test classes and methods
+- Use setup_method() or fixtures for test initialization when needed
+- Organize tests by functionality (e.g., TestCalculator, TestStatistics, TestEdgeCases)
 
-When running tests:
-- Always run the tests after creating them
-- If tests fail, investigate and fix the issues
-- Provide clear explanations of what went wrong
-- Note, a failing tst could be a bug in the code or a typo in the test.
+## Test Coverage Requirements
+- Test all public methods and functions
+- Include edge cases and boundary conditions
+- Test with various data types (int, float, negative numbers, zero)
+- Test with empty collections, single items, and multiple items
+- Test with very large and very small numbers where applicable
+- Test error conditions and exception handling explicitly
+
+## Exception Testing
+- Always test exception handling with check.raises()
+- Include specific exception types and error messages
+- Test both expected exceptions and edge case failures
+- Verify that appropriate error messages are raised
+
+## Test Data and Assertions
+- Use realistic and meaningful test data
+- Test with known expected results (e.g., 2 + 3 = 5)
+- Use check.almost_equal() for floating-point comparisons with appropriate tolerance
+- Test both positive and negative scenarios
+- Include tests for data validation and input sanitization
+
+## Code Quality in Tests
+- Write clean, readable test code
+- Avoid code duplication by using helper methods or fixtures
+- Use parameterized tests when testing multiple similar scenarios
+- Keep tests independent and isolated from each other
+- Use meaningful variable names in tests
+
+## Testing Workflow
+- Always run tests after creating or modifying them
+- If tests fail, investigate and fix the issues systematically
+- Provide clear explanations of what went wrong when tests fail
+- Remember: a failing test could indicate either:
+  - A bug in the code being tested
+  - A typo or error in the test itself
+- Fix the code if the test logic is correct
+- Fix the test if the code logic is correct
+
+## Specific Testing Patterns
+- For mathematical functions: test with known mathematical properties
+- For statistical functions: test with datasets that have known statistical properties
+- For conversion functions: test bidirectional conversions and verify round-trip accuracy
+- For validation functions: test both valid and invalid inputs
+- For stateful objects: test state changes and persistence
+
+## Test Documentation
+- Include clear docstrings explaining what each test validates
+- Document any special test data or expected behaviors
+- Explain complex test logic or mathematical expectations
+- Note any assumptions or limitations in the tests
+
+## Continuous Testing
+- Run tests frequently during development
+- Use test-driven development when appropriate
+- Ensure all tests pass before considering code complete
+- Use tests as documentation of expected behavior 
