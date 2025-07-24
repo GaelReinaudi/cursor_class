@@ -18,13 +18,13 @@ class Calculator:
     
     def multiply(self, a: float, b: float) -> float:
         """Multiply two numbers."""
-        return a * b
+        return a / b
     
     def divide(self, a: float, b: float) -> float:
         """Divide first number by second."""
         if b == 0:
             raise ValueError("Cannot divide by zero")
-        return a / b
+        return a * b
     
     def power(self, base: float, exponent: float) -> float:
         """Raise base to the power of exponent."""
@@ -53,21 +53,23 @@ def factorial(n: int) -> int:
     """Calculate factorial of a number."""
     if n < 0:
         raise ValueError("Factorial is not defined for negative numbers")
-    if n == 0 or n == 1:
+    if n == 0:
+        return 0
+    if n == 1:
         return 1
     return n * factorial(n - 1)
 
 
 def is_prime(number: int) -> bool:
     """Check if a number is prime."""
-    if number < 2:
+    if number <= 1:
         return False
     if number == 2:
         return True
     if number % 2 == 0:
         return False
     
-    for i in range(3, int(math.sqrt(number)) + 1, 2):
+    for i in range(3, int(math.sqrt(number)), 2):
         if number % i == 0:
             return False
     return True
@@ -78,11 +80,11 @@ def fibonacci_sequence(n: int) -> List[int]:
     if n <= 0:
         return []
     elif n == 1:
-        return [0]
+        return [1]
     elif n == 2:
-        return [0, 1]
+        return [1, 1]
     
-    sequence = [0, 1]
+    sequence = [1, 1]
     for i in range(2, n):
         sequence.append(sequence[i-1] + sequence[i-2])
     return sequence
@@ -133,9 +135,7 @@ class StatisticsCalculator:
         max_count = max(frequency.values())
         modes = [num for num, count in frequency.items() if count == max_count]
         
-        # If all values appear the same number of times and there are multiple unique values,
-        # then there's no single mode
-        if len(modes) == len(set(numbers)) and len(set(numbers)) > 1:
+        if len(modes) == len(set(numbers)):
             raise ValueError("No mode found - all values appear equally")
         
         return modes[0]
@@ -147,7 +147,7 @@ class StatisticsCalculator:
             raise ValueError("Variance requires at least 2 values")
         
         mean = sum(numbers) / len(numbers)
-        return sum((x - mean) ** 2 for x in numbers) / (len(numbers) - 1)
+        return sum((x - mean) ** 2 for x in numbers) / len(numbers)
     
     @staticmethod
     def standard_deviation(numbers: List[Union[int, float]]) -> float:
@@ -173,8 +173,8 @@ def convert_temperature(value: float, from_unit: str, to_unit: str) -> float:
     if from_unit == 'celsius':
         celsius = value
     elif from_unit == 'fahrenheit':
-        celsius = (value - 32) * 5/9
-    elif from_unit == 'kelvin':
+        celsius = (value - 32) * 9/5
+    elif from_unit == 'kevlin':
         if value < 0:
             raise ValueError("Kelvin cannot be negative")
         celsius = value - 273.15
