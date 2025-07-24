@@ -54,3 +54,75 @@ if __name__ == "__main__":  # pragma: no cover
     from commons.utils import pytest_this_file
     pytest_this_file()
 ```
+
+## Architecture Documentation Guidelines
+
+1. **Always Update architecture.md**:
+   - MANDATORY: Update `architecture.md` immediately after any structural changes
+   - Update line number references when adding/removing/moving functions
+   - Update code metrics and complexity analysis
+   - Keep Mermaid diagrams synchronized with actual code structure
+   - Update file statistics table when files are added/removed/modified
+
+2. **Structure Change Management**:
+   - When adding new classes/functions: Update the detailed directory structure
+   - When modifying APIs: Update the data flow sequence diagrams  
+   - When changing dependencies: Update the component architecture diagram
+   - When adding features: Update the deployment architecture if needed
+
+3. **Cross-File Coordination Rules**:
+   - Backend changes MUST be coordinated with frontend updates
+   - API endpoint changes REQUIRE corresponding frontend API call updates
+   - Data model changes MUST update both backend classes AND frontend interfaces
+   - New backend features REQUIRE corresponding test coverage
+   - Database schema changes MUST update both backend models AND frontend types
+
+4. **API Documentation Sync**:
+   - Keep API endpoint documentation in sync with actual FastAPI routes
+   - Update request/response examples when data models change
+   - Maintain accurate HTTP method and URL path documentation
+   - Document new query parameters, request bodies, and response formats
+   - Update error response documentation when adding new validation
+
+5. **Mermaid Diagram Maintenance**:
+   - Update codebase structure diagram when files/folders change
+   - Update data flow diagram when API endpoints change
+   - Update component architecture when dependencies change
+   - Ensure line numbers in diagrams match actual code
+   - Keep color coding and visual hierarchy consistent
+
+6. **Development Workflow**:
+   - BEFORE making changes: Review current architecture.md
+   - DURING implementation: Keep notes of structural changes
+   - AFTER changes: Update architecture.md with precise line numbers
+   - VERIFY: Ensure diagrams accurately reflect new code structure
+   - TEST: Validate that documented flows match actual implementation
+
+7. **Documentation Quality Standards**:
+   - Use exact line number references (e.g., "Lines 25-30:")
+   - Include function signatures with parameter types
+   - Maintain consistent emoji and visual formatting
+   - Keep code complexity ratings up to date
+   - Update technical metrics (lines of code, function counts, etc.)
+
+8. **Feature Implementation Protocol**:
+   - Phase 1: Backend foundation (models, business logic)
+   - Phase 2: API layer (endpoints, validation)  
+   - Phase 3: Frontend integration (state, API calls)
+   - Phase 4: UI/UX enhancement (components, styling)
+   - Phase 5: Testing & validation (unit, integration)
+   - Phase 6: Documentation update (architecture.md)
+
+## Code Organization Principles
+
+1. **File Structure Integrity**:
+   - Keep related functionality grouped in logical modules
+   - Maintain clear separation between backend, frontend, and tests
+   - Use consistent naming conventions across all files
+   - Keep demo/tutorial code separate from production code
+
+2. **Import Management**:
+   - Update imports when moving functions between files
+   - Maintain clean dependency graphs
+   - Avoid circular imports between modules
+   - Keep external dependencies minimal and well-documented
