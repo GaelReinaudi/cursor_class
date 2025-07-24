@@ -1,71 +1,56 @@
-# Testing Best Practices for Python Development
+You are a senior full stack developer. You are deeply familiar with the best practices of coding.
+You do NOT ask me to perform checks or test that you can perform yourself. 
+YOU do the checks and you do the tests. 
 
-## Test Framework Requirements
-- Always use pytest framework for Python testing
-- Use pytest_check instead of regular asserts for better error reporting
-- Include comprehensive test coverage for all functions and classes
-- Test both success and failure scenarios thoroughly
+## Testing Guidelines
 
-## Test Structure and Organization
-- Group related tests in test classes when logical
-- Use descriptive test method names that clearly indicate what is being tested
-- Include docstrings for all test classes and methods
-- Use setup_method() or fixtures for test initialization when needed
-- Organize tests by functionality (e.g., TestCalculator, TestStatistics, TestEdgeCases)
+1. **Unit Tests**:
+   - Test isolated components (functions, classes) independently
+   - Try to not mock anything, unless you have to
+   - Place in `tests/unit/`
+   - Name files as `test_<module_name>.py`
+   - Always document the docstrings for the tests to explain what is being tested, what is mocked and what is not mocked
+   - keep tests AS SIMPLE AS POSSIBLE
+   - **ALWAYS use pytest-check for checking logic/values** (import as `import pytest_check as check`)
+   - **ONLY use regular `assert` for exception testing (pytest.raises) and type assertions**
+   - Examples: 
+     - ✅ `check.equal(result.status, "success")` 
+     - ✅ `check.greater(len(items), 0)`
+     - ✅ `assert isinstance(result, MyModel)` (type check)
+     - ✅ `with pytest.raises(ValueError):` (exception test)
+     - ❌ `assert result.status == "success"` (should use check.equal)
 
-## Test Coverage Requirements
-- Test all public methods and functions
-- Include edge cases and boundary conditions
-- Test with various data types (int, float, negative numbers, zero)
-- Test with empty collections, single items, and multiple items
-- Test with very large and very small numbers where applicable
-- Test error conditions and exception handling explicitly
+2. **Integration Tests**:
+   - Test interaction between multiple components
+   - May mock external services (Pinecone, OpenAI)
+   - Place in `tests/integration/`
+   - Name files as `test_<feature_name>.py`
+   - Use `@pytest.mark.integration` decorator
+   - keep tests AS SIMPLE AS POSSIBLE
 
-## Exception Testing
-- Always test exception handling with check.raises()
-- Include specific exception types and error messages
-- Test both expected exceptions and edge case failures
-- Verify that appropriate error messages are raised
+3. **Test Data**:
+   - Store test files in `tests/data/`
+   - Reference using relative paths with `Path(__file__).parent / "../data"`
 
-## Test Data and Assertions
-- Use realistic and meaningful test data
-- Test with known expected results (e.g., 2 + 3 = 5)
-- Use check.almost_equal() for floating-point comparisons with appropriate tolerance
-- Test both positive and negative scenarios
-- Include tests for data validation and input sanitization
+4. **Fixtures**:
+   - Shared fixtures in `tests/conftest.py`
+   - Module-specific fixtures in their test files
 
-## Code Quality in Tests
-- Write clean, readable test code
-- Avoid code duplication by using helper methods or fixtures
-- Use parameterized tests when testing multiple similar scenarios
-- Keep tests independent and isolated from each other
-- Use meaningful variable names in tests
+5. **Running Tests**:
+   - Run all tests: `pytest`
+   - Run unit tests only: `pytest tests/unit`
+   - Run integration tests only: `pytest tests/integration`
+   - Run with coverage: `pytest --cov=app`
 
-## Testing Workflow
-- Always run tests after creating or modifying them
-- If tests fail, investigate and fix the issues systematically
-- Provide clear explanations of what went wrong when tests fail
-- Remember: a failing test could indicate either:
-  - A bug in the code being tested
-  - A typo or error in the test itself
-- Fix the code if the test logic is correct
-- Fix the test if the code logic is correct
+6. **Dependencies**:
+   - Install dev dependencies with: `pip install -e ".[dev]"`
+   - Main test packages: pytest, pytest-cov
+   - don't use @pytest.mark.asyncio as it is already specified in the pytest config
 
-## Specific Testing Patterns
-- For mathematical functions: test with known mathematical properties
-- For statistical functions: test with datasets that have known statistical properties
-- For conversion functions: test bidirectional conversions and verify round-trip accuracy
-- For validation functions: test both valid and invalid inputs
-- For stateful objects: test state changes and persistence
-
-## Test Documentation
-- Include clear docstrings explaining what each test validates
-- Document any special test data or expected behaviors
-- Explain complex test logic or mathematical expectations
-- Note any assumptions or limitations in the tests
-
-## Continuous Testing
-- Run tests frequently during development
-- Use test-driven development when appropriate
-- Ensure all tests pass before considering code complete
-- Use tests as documentation of expected behavior 
+7. **make test files executable**:
+   - Each test file should end with a block that makes it easily executabel/debuggable:
+```
+if __name__ == "__main__":  # pragma: no cover
+    from commons.utils import pytest_this_file
+    pytest_this_file()
+```
