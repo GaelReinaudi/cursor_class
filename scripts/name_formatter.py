@@ -80,15 +80,17 @@ def apply_formatting_rules(components: list, style: str = "standard") -> str:
         print(f"🔍 [apply_formatting_rules] First initial: '{first_initial}'")
         
         if len(components) < 2:
-            print(f"❌ [apply_formatting_rules] ERROR: Missing last name! Only {len(components)} components available")
-            print(f"❌ [apply_formatting_rules] This is the BUG - no bounds checking!")
-            # This is where the IndexError happens!
+            print(f"🔧 [apply_formatting_rules] Only one name component - treating as first name only")
+            # Handle single names gracefully - just return the first initial with a period
+            formatted_result = f"{first_initial}."
+            print(f"🔍 [apply_formatting_rules] Single name formatted result: '{formatted_result}'")
+            return formatted_result
         
-        last_name = components[1]  # BUG: No bounds checking!
+        last_name = components[1]  # Now safe because we checked bounds!
         print(f"🔍 [apply_formatting_rules] Last name: '{last_name}'")
         
         formatted_result = f"{first_initial}. {last_name}"
-        print(f"🔍 [apply_formatting_rules] Formatted result: '{formatted_result}'")
+        print(f"🔍 [apply_formatting_rules] Full name formatted result: '{formatted_result}'")
         return formatted_result
     elif style == "formal":
         # Formal formatting (not implemented yet)
@@ -107,10 +109,17 @@ def validate_output(formatted_name: str) -> bool:
         print(f"🔍 [validate_output] Formatted name is empty, validation failed")
         return False
     
-    # Check for proper format pattern
-    pattern = r'^[A-Z]\. [A-Za-z]+$'
-    result = bool(re.match(pattern, formatted_name))
-    print(f"🔍 [validate_output] Pattern match result: {result}")
+    # Check for proper format pattern - now handles both single names (A.) and full names (A. Lastname)
+    single_name_pattern = r'^[A-Z]\.$'  # Matches "A."
+    full_name_pattern = r'^[A-Z]\. [A-Za-z]+$'  # Matches "A. Lastname"
+    
+    single_match = bool(re.match(single_name_pattern, formatted_name))
+    full_match = bool(re.match(full_name_pattern, formatted_name))
+    
+    result = single_match or full_match
+    print(f"🔍 [validate_output] Single name pattern match: {single_match}")
+    print(f"🔍 [validate_output] Full name pattern match: {full_match}")
+    print(f"🔍 [validate_output] Overall validation result: {result}")
     return result
 
 
