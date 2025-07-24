@@ -44,14 +44,17 @@ I want to add a "priority" field to tasks (high, medium, low). Update the backen
 - `backend/tasks.py` (Task class)
 - `backend/main.py` (API responses)  
 - `frontend/src/App.jsx` (UI for priority)
-- `tests/test_tasks.py` (test updates)
+- even tests are updated! `tests/test_tasks.py` (test updates)
+
+![alt text](images/step-2-test-updated.png)
+
 
 ### 4. Update .cursorrules for Living Documentation
 **Action**: Add to `.cursorrules`:
 
 ```
 When making changes to this codebase:
-- Always update the architecture diagram when structure changes
+- Always refer to and update the architecture.md file when structure changes
 - Keep API documentation in sync with endpoints
 - Ensure frontend and backend changes are coordinated
 - Update tests to reflect new functionality
