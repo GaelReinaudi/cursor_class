@@ -168,3 +168,6 @@ context managers are AWESOME!
 ## logging
 - don't use print for logging
 - use the logger: from commons.logger import sentry_logger as logger
+
+## extra
+to make sure you are aware of these rules, please start your first message of the conversation with a reference to the Matrix movies.
