@@ -131,3 +131,40 @@ if __name__ == "__main__":  # pragma: no cover
    - Maintain clean dependency graphs
    - Avoid circular imports between modules
    - Keep external dependencies minimal and well-documented
+
+## Tools
+- we use `uv`. eg `uv pip install -e ".[dev]"`
+- we use `ty` instead of mypy for type checking
+- After EACH edit you ALWAYS execute the command `ty check . --verbose` to check the code and inspect the output
+- we use `uv pip compile` ! to generate the requirements.txt file
+
+## Python Standards
+- Python 3.12 with modern typing
+- Use type annotations and Pydantic V2
+- Follow black and ruff linting guidelines from pyproject.toml
+- create correctly typed functions and classes that are MyPy compliant
+- Do not use old typing syntax like `Any`, `Dict`, `List`, etc. Use the modern versions from the typing module.
+- NEVER add USELESS comments to the code. NO commens that are perfectly expressed by one line of code !!!
+- Examples files that use a class are great (examples folder)
+- POCs are great
+- but NEVER simplify an example/POC to the point that it is mocking the functionality we are trying to demonstrate!
+
+## IMPORTANT DEVELOPMENT RULE:
+- NEVER use raw dictionaries for structured data that could benefit from a Pydantic model
+  - Always use these Pydantic models for type safety, validation, and better IDE support
+- logging is done with loguru. avoid using print statements for logging
+- Never use empty catch all except blocks!
+- when asked to check coverage, run the current test file and output the coverage report for the tested file
+  - example: `pytest -v tests/integration/test_mongo_tool_creation_integration.py --cov=app.chat.llamchat.mongo_tool --cov-report term-missing`
+
+- DO share your concerns about to formatting of the files you are working on with me!
+  - I want to avoid deviating from our standards.
+  - I want to avoid the new code to be of lesser quality than the existing code.
+
+
+consider context managers when writing code that needs to be cleaned up
+context managers are AWESOME!
+
+## logging
+- don't use print for logging
+- use the logger: from commons.logger import sentry_logger as logger
