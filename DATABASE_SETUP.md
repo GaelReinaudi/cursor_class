@@ -4,6 +4,112 @@
 
 A comprehensive task management database with **7 tables** and multiple relationships demonstrating real-world database design patterns.
 
+### 📊 Entity Relationship Diagram
+
+```mermaid
+erDiagram
+    users {
+        uuid id PK
+        varchar username UK
+        varchar email UK
+        varchar password_hash
+        varchar first_name
+        varchar last_name
+        boolean is_active
+        boolean is_admin
+        timestamp created_at
+        timestamp updated_at
+        timestamp last_login
+    }
+
+    categories {
+        uuid id PK
+        varchar name UK
+        text description
+        varchar color
+        uuid created_by FK
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    tasks {
+        uuid id PK
+        varchar title
+        text description
+        varchar status
+        varchar priority
+        timestamp due_date
+        timestamp completed_at
+        decimal estimated_hours
+        decimal actual_hours
+        uuid assigned_to FK
+        uuid created_by FK
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    task_categories {
+        uuid task_id FK
+        uuid category_id FK
+        timestamp created_at
+    }
+
+    comments {
+        uuid id PK
+        uuid task_id FK
+        uuid user_id FK
+        text content
+        boolean is_internal
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    attachments {
+        uuid id PK
+        uuid task_id FK
+        uuid uploaded_by FK
+        varchar filename
+        integer file_size
+        varchar mime_type
+        varchar file_path
+        timestamp created_at
+    }
+
+    task_history {
+        uuid id PK
+        uuid task_id FK
+        uuid user_id FK
+        varchar action
+        jsonb old_values
+        jsonb new_values
+        timestamp created_at
+    }
+
+    %% Relationships
+    users ||--o{ tasks : "assigned_to"
+    users ||--o{ tasks : "created_by"
+    users ||--o{ categories : "created_by"
+    users ||--o{ comments : "user_id"
+    users ||--o{ attachments : "uploaded_by"
+    users ||--o{ task_history : "user_id"
+    
+    tasks ||--o{ task_categories : "task_id"
+    categories ||--o{ task_categories : "category_id"
+    
+    tasks ||--o{ comments : "task_id"
+    tasks ||--o{ attachments : "task_id"
+    tasks ||--o{ task_history : "task_id"
+
+    %% Styling
+    classDef primaryEntity fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef relationshipEntity fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef auditEntity fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    
+    class users,tasks,categories primaryEntity
+    class task_categories relationshipEntity
+    class comments,attachments,task_history auditEntity
+```
+
 ### 📋 Tables & Relationships
 
 #### **Core Entities**
