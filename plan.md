@@ -34,19 +34,19 @@
   - Make Cursor be responsible **for** convincing you  
   - More `.cursorrules` again: have a bit of fun
 
-## Step 4 — Infra on the Fly
+## Step 4 — One‑Off Tasks Magic
+- *Subjects*: Legacy → modern stack, validation safety nets  
+- Scenario: data migration  
+- *Tricks / Tools*:  
+  - Cursor opens DB files, explores them
+
+## Step 5 — Infra on the Fly
 - *Subjects*: Dev → DevOps hand‑off — stop wasting time  
 - Scenario: from zero to GraphQL in minutes  
 - *Tricks / Tools*:  
   - Stop fighting your own system! Cursor can do it  
   - Cursor‑generated `docker-compose.yml`  
   - Health‑check script authored by Cursor to wait for services
-
-## Step 5 — One‑Off Tasks Magic
-- *Subjects*: Legacy → modern stack, validation safety nets  
-- Scenario: data migration  
-- *Tricks / Tools*:  
-  - Cursor opens DB files, explores them
 
 ## Step 6 — Version‑Control Dance (Cursor × SmartGit)
 - *Subjects*: Review discipline, partial staging, commit hygiene  
