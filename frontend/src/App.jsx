@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 function App() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState('');
+  const [newTaskPriority, setNewTaskPriority] = useState('medium');
 
   const fetchTasks = async () => {
     try {
@@ -23,11 +24,12 @@ function App() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ desc: newTask }),
+        body: JSON.stringify({ desc: newTask, priority: newTaskPriority }),
       });
       
       if (response.ok) {
         setNewTask('');
+        setNewTaskPriority('medium');
         await fetchTasks();
       }
     } catch (error) {
@@ -82,10 +84,25 @@ function App() {
             marginRight: '10px', 
             borderRadius: '4px', 
             border: '1px solid #ddd',
-            width: '300px'
+            width: '200px'
           }}
           onKeyPress={(e) => e.key === 'Enter' && addTask()}
         />
+        <select
+          value={newTaskPriority}
+          onChange={(e) => setNewTaskPriority(e.target.value)}
+          style={{
+            padding: '10px',
+            marginRight: '10px',
+            borderRadius: '4px',
+            border: '1px solid #ddd',
+            backgroundColor: 'white'
+          }}
+        >
+          <option value="high" style={{ color: '#dc3545' }}>🔴 High</option>
+          <option value="medium" style={{ color: '#ffc107' }}>🟡 Medium</option>
+          <option value="low" style={{ color: '#28a745' }}>🟢 Low</option>
+        </select>
         <button 
           onClick={addTask}
           style={{
@@ -102,22 +119,59 @@ function App() {
       </div>
 
       <ul style={{ listStyle: 'none', padding: 0 }}>
-        {tasks.map((task) => (
-          <li key={task.id} style={{ 
-            marginBottom: '10px', 
-            padding: '10px', 
-            border: '1px solid #eee', 
-            borderRadius: '4px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}>
-            <span style={{ 
-              textDecoration: task.completed ? 'line-through' : 'none',
-              color: task.completed ? '#666' : '#000'
-            }}>
-              {task.description}
-            </span>
+        {tasks
+          .sort((a, b) => {
+            const priorityOrder = { high: 0, medium: 1, low: 2 };
+            return priorityOrder[a.priority] - priorityOrder[b.priority];
+          })
+          .map((task) => {
+            const priorityColors = {
+              high: '#dc3545',
+              medium: '#ffc107', 
+              low: '#28a745'
+            };
+            const prioritySymbols = {
+              high: '🔴',
+              medium: '🟡',
+              low: '🟢'
+            };
+            
+            return (
+              <li key={task.id} style={{ 
+                marginBottom: '10px', 
+                padding: '10px', 
+                border: '1px solid #eee', 
+                borderRadius: '4px',
+                borderLeftWidth: '4px',
+                borderLeftColor: priorityColors[task.priority],
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <span style={{ 
+                    fontSize: '16px'
+                  }}>
+                    {prioritySymbols[task.priority]}
+                  </span>
+                  <span style={{ 
+                    textDecoration: task.completed ? 'line-through' : 'none',
+                    color: task.completed ? '#666' : '#000'
+                  }}>
+                    {task.description}
+                  </span>
+                  <span style={{
+                    fontSize: '12px',
+                    backgroundColor: priorityColors[task.priority],
+                    color: 'white',
+                    padding: '2px 6px',
+                    borderRadius: '12px',
+                    textTransform: 'uppercase',
+                    fontWeight: 'bold'
+                  }}>
+                    {task.priority}
+                  </span>
+                </div>
             
             <div>
               {!task.completed && (
@@ -151,7 +205,8 @@ function App() {
               </button>
             </div>
           </li>
-        ))}
+            );
+          })}
       </ul>
 
       {tasks.length === 0 && (

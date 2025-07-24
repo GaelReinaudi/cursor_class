@@ -1,15 +1,31 @@
 from typing import List, Optional
 from datetime import datetime
+from enum import Enum
+
+
+class TaskPriority(Enum):
+    """Task priority levels."""
+    HIGH = "high"
+    MEDIUM = "medium"
+    LOW = "low"
 
 
 class Task:
-    """Represents a single task with id, description, and completion status."""
+    """Represents a single task with id, description, priority, and completion status."""
     
-    def __init__(self, task_id: int, description: str):
+    def __init__(self, task_id: int, description: str, priority: str = "medium"):
         self.id = task_id
         self.description = description
+        self.priority = self._validate_priority(priority)
         self.completed = False
         self.created_at = datetime.now()
+    
+    def _validate_priority(self, priority: str) -> str:
+        """Validate priority value and return normalized priority."""
+        valid_priorities = [p.value for p in TaskPriority]
+        if priority.lower() not in valid_priorities:
+            raise ValueError(f"Priority must be one of: {', '.join(valid_priorities)}")
+        return priority.lower()
     
     def mark_completed(self) -> None:
         """Mark this task as completed."""
@@ -17,7 +33,9 @@ class Task:
     
     def __repr__(self) -> str:
         status = "✓" if self.completed else "○"
-        return f"[{status}] {self.description}"
+        priority_symbols = {"high": "🔴", "medium": "🟡", "low": "🟢"}
+        priority_symbol = priority_symbols.get(self.priority, "⚪")
+        return f"[{status}] {priority_symbol} {self.description} ({self.priority})"
 
 
 class TaskManager:
@@ -27,9 +45,9 @@ class TaskManager:
         self.tasks: List[Task] = []
         self._next_id = 1
     
-    def add_task(self, description: str) -> Task:
+    def add_task(self, description: str, priority: str = "medium") -> Task:
         """Add a new task and return it."""
-        task = Task(self._next_id, description)
+        task = Task(self._next_id, description, priority)
         self.tasks.append(task)
         self._next_id += 1
         return task
@@ -67,4 +85,13 @@ class TaskManager:
     
     def get_completed_tasks(self) -> List[Task]:
         """Return only completed tasks."""
-        return [task for task in self.tasks if task.completed] 
+        return [task for task in self.tasks if task.completed]
+    
+    def get_tasks_by_priority(self, priority: str) -> List[Task]:
+        """Return tasks filtered by priority level."""
+        return [task for task in self.tasks if task.priority == priority.lower()]
+    
+    def get_priority_sorted_tasks(self) -> List[Task]:
+        """Return all tasks sorted by priority (high -> medium -> low)."""
+        priority_order = {"high": 0, "medium": 1, "low": 2}
+        return sorted(self.tasks, key=lambda task: priority_order.get(task.priority, 3))

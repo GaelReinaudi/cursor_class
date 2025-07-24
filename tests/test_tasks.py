@@ -10,24 +10,60 @@ class TestTask:
         task = Task(1, "Test task")
         assert task.id == 1
         assert task.description == "Test task"
+        assert task.priority == "medium"  # default priority
+        assert task.completed is False
+        assert task.created_at is not None
+    
+    def test_task_creation_with_priority(self):
+        """Test creating a task with specific priority."""
+        task = Task(1, "Test task", "high")
+        assert task.id == 1
+        assert task.description == "Test task"
+        assert task.priority == "high"
         assert task.completed is False
         assert task.created_at is not None
     
     def test_mark_completed(self):
         """Test marking a task as completed."""
-        task = Task(1, "Test task")
+        task = Task(1, "Test task", "high")
         assert task.completed is False
+        assert task.priority == "high"  # verify priority preserved
         task.mark_completed()
         assert task.completed is True
+        assert task.priority == "high"  # verify priority still preserved
     
     def test_task_repr(self):
         """Test task string representation."""
-        task = Task(1, "Test task")
+        task = Task(1, "Test task", "high")
         assert "○" in str(task)
+        assert "🔴" in str(task)  # high priority symbol
         assert "Test task" in str(task)
+        assert "(high)" in str(task)
         
         task.mark_completed()
         assert "✓" in str(task)
+        assert "🔴" in str(task)  # priority symbol preserved
+        assert "(high)" in str(task)  # priority text preserved
+    
+    def test_priority_validation(self):
+        """Test priority validation."""
+        # Valid priorities
+        task_high = Task(1, "Test", "high")
+        assert task_high.priority == "high"
+        
+        task_medium = Task(2, "Test", "medium")
+        assert task_medium.priority == "medium"
+        
+        task_low = Task(3, "Test", "low")
+        assert task_low.priority == "low"
+        
+        # Case insensitive
+        task_upper = Task(4, "Test", "HIGH")
+        assert task_upper.priority == "high"
+        
+        # Invalid priority should raise ValueError
+        with pytest.raises(ValueError):
+            Task(5, "Test", "invalid")
 
 
 class TestTaskManager:
@@ -42,6 +78,15 @@ class TestTaskManager:
         task = self.manager.add_task("Test task")
         assert task.id == 1
         assert task.description == "Test task"
+        assert task.priority == "medium"  # default priority
+        assert len(self.manager.tasks) == 1
+    
+    def test_add_task_with_priority(self):
+        """Test adding a task with specific priority."""
+        task = self.manager.add_task("Test task", "high")
+        assert task.id == 1
+        assert task.description == "Test task"
+        assert task.priority == "high"
         assert len(self.manager.tasks) == 1
     
     def test_list_tasks(self):
@@ -118,4 +163,38 @@ class TestTaskManager:
         
         assert task1.id == 1
         assert task2.id == 2
-        assert task3.id == 3 
+        assert task3.id == 3
+    
+    def test_get_tasks_by_priority(self):
+        """Test filtering tasks by priority."""
+        self.manager.add_task("High task", "high")
+        self.manager.add_task("Medium task", "medium")
+        self.manager.add_task("Low task", "low")
+        self.manager.add_task("Another high task", "high")
+        
+        high_tasks = self.manager.get_tasks_by_priority("high")
+        assert len(high_tasks) == 2
+        assert all(task.priority == "high" for task in high_tasks)
+        
+        medium_tasks = self.manager.get_tasks_by_priority("medium")
+        assert len(medium_tasks) == 1
+        assert medium_tasks[0].priority == "medium"
+        
+        low_tasks = self.manager.get_tasks_by_priority("low")
+        assert len(low_tasks) == 1
+        assert low_tasks[0].priority == "low"
+    
+    def test_get_priority_sorted_tasks(self):
+        """Test getting tasks sorted by priority."""
+        # Add tasks in mixed order
+        low_task = self.manager.add_task("Low priority task", "low")
+        high_task = self.manager.add_task("High priority task", "high")
+        medium_task = self.manager.add_task("Medium priority task", "medium")
+        
+        sorted_tasks = self.manager.get_priority_sorted_tasks()
+        
+        # Should be sorted: high, medium, low
+        assert len(sorted_tasks) == 3
+        assert sorted_tasks[0].priority == "high"
+        assert sorted_tasks[1].priority == "medium"
+        assert sorted_tasks[2].priority == "low"

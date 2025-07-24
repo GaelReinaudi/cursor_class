@@ -1,7 +1,7 @@
 """FastAPI app providing task management endpoints."""
 
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from backend.tasks import TaskManager, Task
 
 
@@ -11,20 +11,21 @@ manager = TaskManager()
 
 class TaskCreate(BaseModel):
     desc: str
+    priority: str = Field(default="medium", pattern="^(high|medium|low)$")
 
 
 @app.get("/tasks")
 async def get_tasks():
     """Get all tasks."""
     tasks = manager.list_tasks()
-    return [{"id": t.id, "description": t.description, "completed": t.completed} for t in tasks]
+    return [{"id": t.id, "description": t.description, "priority": t.priority, "completed": t.completed} for t in tasks]
 
 
 @app.post("/tasks")
 async def create_task(task_data: TaskCreate):
     """Create a new task."""
-    task = manager.add_task(task_data.desc)
-    return {"id": task.id, "description": task.description, "completed": task.completed}
+    task = manager.add_task(task_data.desc, task_data.priority)
+    return {"id": task.id, "description": task.description, "priority": task.priority, "completed": task.completed}
 
 
 @app.put("/tasks/{task_id}")
